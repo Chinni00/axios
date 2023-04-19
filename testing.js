@@ -1,48 +1,66 @@
-let Fname=document.getElementById('name');
-let email=document.getElementById('email');
-let phone=document.getElementById('phone');
- let postBtn=document.getElementById('postBtn');
- let postList=document.getElementById('postList');
+const apiUrl='https://crudcrud.com/api/aef3a8e77d07440eb455714109053939/appointments'
+let inputName=document.getElementById('name');
+let inputEmail=document.getElementById('email');
+let inputPhone =document.getElementById('phone');
+let appointmentsList=document.getElementById('appointments-list');
+let postBtn=document.getElementById('post-btn');
 
-let getList=document.getElementById('getList');
-let getBtn=document.getElementById('getBtn');
+function displayOnUi(appointments){
+    appointmentsList.innerHTML='';
+    
+    appointments.forEach(ele => {
+        let li=document.createElement('li');
+        li.innerHTML=`<span>Name:${ele.name}</span>
+        <span>Email:${ele.email}</span>
+        <span>Phone:${ele.phone}</span>
+        <button class='delete-btn' data-id=${ele._id} >delete</button>
+        `
+        appointmentsList.appendChild(li);
+    });
+
+    const deleteBtns=document.querySelectorAll('.delete-btn');
+    deleteBtns.forEach(btn => {
+    btn.addEventListener('click',()=>{
+        const appointmentId=btn.getAttribute('data-id');
+        deleteAppointment(appointmentId);
+    })
+});
+}
+
+function createAppointment(appointment){
+    axios.post(apiUrl,appointment)
+    .then(res=>{
+        console.log(res.data);
+        getAppointments();
+    })
+    .catch(err=>console.log(err))
+}
+
+function deleteAppointment(appointmentId){
+    axios.delete(`${apiUrl}/${appointmentId}`)
+    .then(res=>{
+        console.log(res);
+        getAppointments();
+    })
+    .catch(err=>console.log(err))
+}
+
+function getAppointments(){
+    axios.get(apiUrl)
+    .then(res=>{
+        const appointments=res.data;
+        console.log(res.data)
+        displayOnUi(appointments);
+    })
+    .catch(err=>console.log(err))
+}
 
 postBtn.addEventListener('click',()=>{
-    let data;
-    let obj={
-        name:Fname.value,
-        email:email.value,
-        phone:phone.value
+    const appointment={
+        name:inputName.value,
+        email:inputEmail.value,
+        phone:inputPhone.value
     }
-    let li=document.createElement('li');
-    axios.post("https://crudcrud.com/api/6e8c4d033a564ae0bde31efbb1345436/appointments",obj)
-    .then(res=>{
-        data=res.data;
-        console.log(res.data)
-    })
-    .then(()=>li.innerText=`${data.name}-${data.email}-${data.phone}`)
-    .catch(err=>console.log(err))
-    
-     postList.appendChild(li);
-    Fname.value='';
-    email.value='';
-    phone.value=''
-})
-
-window.addEventListener("DOMContentLoaded",()=>{
-    let getData;
-    axios.get('https://crudcrud.com/api/6e8c4d033a564ae0bde31efbb1345436/appointments')
-    .then((res)=>{
-        getData=res.data;
-        console.log(res.data)
-    })
-    .then(()=>{
-        for(obj of getData){
-            let li=document.createElement('li');
-            li.textContent=`${obj.name}-${obj.email}-${obj.phone}`
-            getList.appendChild(li);
-            
-        }
-    })
-    .catch(err=>console.log(err))
-})
+    createAppointment(appointment);
+});
+getAppointments();

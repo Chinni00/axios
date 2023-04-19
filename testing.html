@@ -8,24 +8,19 @@
  <link rel="stylesheet" href="./testing.css">
 </head>
 <body>
-  <label for="name"> Name:</label>
-  <input type="text" id="name">
-  <label for="email">Email:</label>
-  <input type="email" id="email"><br>
-  <label for="phone">Phone</label>
-  <input type="text" id="phone">
-  <button id="postBtn">Post</button>
-  <div id="axiosContqiner">
-    <div id="post">
-      <h1>Post</h1>
-      <ul id="postList">
+  <label>Name:</label>
+<input type="text" id="name">
 
-      </ul>
-    </div>
-    <div id="get">
-      <h1>Get</h1>
-      <ul id="getList"></ul>
-    </div>
+<label>Email:</label>
+<input type="email" id="email">
+
+<label>Phone Number:</label>
+<input type="tel" id="phone">
+
+<button id="post-btn">Post</button>
+
+<ul id="appointments-list"></ul>
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="./testing.js"></script>
