@@ -14,10 +14,11 @@ function displayOnUi(appointments){
         <span>Email:${ele.email}</span>
         <span>Phone:${ele.phone}</span>
         <button class='delete-btn' data-id=${ele._id} >delete</button>
+        <button class='update-btn' data-id=${ele._id} >Update</button>
         `
         appointmentsList.appendChild(li);
     });
-
+    const updateBtns=document.querySelectorAll('.update-btn');
     const deleteBtns=document.querySelectorAll('.delete-btn');
     deleteBtns.forEach(btn => {
     btn.addEventListener('click',()=>{
@@ -25,6 +26,12 @@ function displayOnUi(appointments){
         deleteAppointment(appointmentId);
     })
 });
+    updateBtns.forEach(btn=>{
+        btn.addEventListener('click',()=>{
+            const appointmentId=btn.getAttribute('data-id');
+            updateAppointment(appointmentId);
+        })
+    })
 }
 
 function createAppointment(appointment){
@@ -38,6 +45,20 @@ function createAppointment(appointment){
 
 function deleteAppointment(appointmentId){
     axios.delete(`${apiUrl}/${appointmentId}`)
+    .then(res=>{
+        console.log(res);
+        getAppointments();
+    })
+    .catch(err=>console.log(err))
+}
+
+function updateAppointment(appointmentId){
+    let obj={
+        name:inputName.value,
+        email:inputEmail.value,
+        phone:inputPhone.value
+    }
+    axios.put(`${apiUrl}/${appointmentId}`,obj)
     .then(res=>{
         console.log(res);
         getAppointments();
