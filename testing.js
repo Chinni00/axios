@@ -1,11 +1,9 @@
-
-
-
 let Fname=document.getElementById('name');
 let email=document.getElementById('email');
 let phone=document.getElementById('phone');
-let postBtn=document.getElementById('postBtn');
-let postList=document.getElementById('postList');
+ let postBtn=document.getElementById('postBtn');
+ let postList=document.getElementById('postList');
+
 let getList=document.getElementById('getList');
 let getBtn=document.getElementById('getBtn');
 
@@ -31,9 +29,8 @@ postBtn.addEventListener('click',()=>{
     phone.value=''
 })
 
-getBtn.addEventListener('click',()=>{
+window.addEventListener("DOMContentLoaded",()=>{
     let getData;
-    
     axios.get('https://crudcrud.com/api/6e8c4d033a564ae0bde31efbb1345436/appointments')
     .then((res)=>{
         getData=res.data;
@@ -44,6 +41,7 @@ getBtn.addEventListener('click',()=>{
             let li=document.createElement('li');
             li.textContent=`${obj.name}-${obj.email}-${obj.phone}`
             getList.appendChild(li);
+            
         }
     })
     .catch(err=>console.log(err))
